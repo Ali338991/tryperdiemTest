@@ -8,31 +8,32 @@ import {View, TextInput, Text, StyleSheet, Alert} from 'react-native';
 import {login} from '@redux/state/authSlice';
 import {initilizeTodo} from '@store/state/todoSlice';
 import {defaultTodoList} from '@app/constant';
-import { loginAPi } from '@store/api/authApi';
+import {loginAPi} from '@store/api/authApi';
+import Button from '@components/Button';
 export default function LoginScreen({navigation}: StackScreen<'Login'>) {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loader, setloader] = useState(false)
+  const [loader, setloader] = useState(false);
   const dispatch = useAppDispatch();
   const handleLogin = async () => {
-    if(!userName){
-      return Alert.alert("username missing")
+    if (!userName) {
+      return Alert.alert('username missing');
     }
-    if(!password){
-      return Alert.alert("password missing")
+    if (!password) {
+      return Alert.alert('password missing');
     }
-    setloader(true)
+    setloader(true);
     const response = await loginAPi({
       userName,
       password,
-    })
+    });
 
     if (response?.status !== 200) {
-    setloader(false)
+      setloader(false);
       return Alert.alert(response?.message);
     }
-    setloader(false)
+    setloader(false);
     dispatch(login(response));
     dispatch(initilizeTodo(defaultTodoList));
     navigation.navigate('Home');
@@ -57,13 +58,16 @@ export default function LoginScreen({navigation}: StackScreen<'Login'>) {
         <Icon
           name={showPassword ? 'eye-off' : 'eye'}
           style={styles.showHideBtn}
+          size={20}
           onPress={() => setShowPassword(!showPassword)}
         />
       </View>
 
-      <PressableOpacity style={styles.button} onPress={handleLogin} loading={loader}>
-        <Text style={styles.buttonText}>Sign In</Text>
-      </PressableOpacity>
+      <View>
+      <Button onPress={handleLogin} loading={loader}>
+        Sign In
+      </Button>
+      </View>
       <Text style={styles.orText}>OR</Text>
       <GoogleLogin />
     </View>
@@ -103,15 +107,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 20,
     color: '#666',
-  },
-  button: {
-    backgroundColor: '#4285F4',
-    paddingVertical: 15,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold',
   },
 });

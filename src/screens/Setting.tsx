@@ -12,11 +12,14 @@ export default function Setting() {
   const {user} = useAppSelector(state => state.auth);
   return (
     <SafeAreaView style={styles.container}>
+      <Text size={30} style={styles.title}>
+        Information
+      </Text>
       <View style={styles.listItem}>
         <Text>Name</Text>
         <Text>{user?.name}</Text>
       </View>
-      <View>
+      <View style={styles.listItem}>
         <Text>email</Text>
         <Text>{user?.email}</Text>
       </View>
@@ -45,5 +48,10 @@ const styles = StyleSheet.create({
   },
   btnText: {
     color: COLOR.white,
+  },
+  title: {
+    color: COLOR.black,
+    marginVertical: 40,
+    textAlign: 'center',
   },
 });

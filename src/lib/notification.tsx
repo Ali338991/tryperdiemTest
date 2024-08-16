@@ -3,10 +3,10 @@ import notifee, { TriggerType, TimestampTrigger } from '@notifee/react-native';
 type Props = {
   message: string;
   title?: string;
-  delay?: number; // Delay in seconds
+  delay?: number; 
 };
 
-async function displayNotification({ message, title = 'Notification', delay = 0 }: Props) {
+async function displayNotification({ message, title = 'On tag list', delay = 0 }: Props) {
   // Request permissions (required for iOS)
   await notifee.requestPermission();
 
@@ -28,7 +28,6 @@ async function displayNotification({ message, title = 'Notification', delay = 0 
         body: message,
         android: {
           channelId,
-          smallIcon: 'name-of-a-small-icon', 
           pressAction: {
             id: 'default',
           },
@@ -42,7 +41,6 @@ async function displayNotification({ message, title = 'Notification', delay = 0 
       body: message,
       android: {
         channelId,
-        smallIcon: 'name-of-a-small-icon', 
         pressAction: {
           id: 'default',
         },

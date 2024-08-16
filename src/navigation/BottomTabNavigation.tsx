@@ -53,7 +53,9 @@ export default BottomTabsNavigation;
 const styles = StyleSheet.create({
   tabBar: {
     paddingHorizontal: 10,
-    paddingTop: 10,
+    paddingBottom: 10,
+    paddingTop: 15,
+    height: 74,
   },
   label: {
     fontSize: 12,

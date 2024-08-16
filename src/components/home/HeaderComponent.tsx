@@ -1,4 +1,11 @@
-import {View, StyleSheet, FlatList, Modal, TextInput} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  Modal,
+  TextInput,
+  Platform,
+} from 'react-native';
 import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from '@store/store';
 import PressableOpacity from '@components/PressableOpacity';
@@ -8,12 +15,14 @@ import {addItemInList, removeItemInList} from '@store/state/todoSlice';
 import {List} from '@app/types/todo';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Text from '@components/Text';
+import Button from '@components/Button';
 
 export default function HeaderComponent() {
   const [openModal, setOpenModal] = useState(false);
   const {list} = useAppSelector(state => state.todo);
   const [date, setDate] = useState(new Date());
   const [title, setTitle] = useState('');
+  const [showPiker, setShowPiker] = useState(false);
   const dispatch = useAppDispatch();
   const handlesave = () => {
     const data: List = {
@@ -30,7 +39,11 @@ export default function HeaderComponent() {
         ListHeaderComponent={
           <PressableOpacity
             style={styles.btn}
-            onPress={() => setOpenModal(true)}>
+            onPress={() => {
+              setTitle('');
+              setShowPiker(Platform.OS === 'ios');
+              setOpenModal(true);
+            }}>
             <Text style={styles.btnText}>Add</Text>
           </PressableOpacity>
         }
@@ -69,16 +82,25 @@ export default function HeaderComponent() {
               value={title}
               onChangeText={setTitle}
             />
-            <DateTimePiker
-              value={date}
-              mode="datetime"
-              style={styles.datePiker}
-              onChange={(_, value) => {
-                if (value) {
-                  setDate(value);
-                }
-              }}
-            />
+            <Button onPress={() => setShowPiker(true)}>selet date</Button>
+            {showPiker && (
+              <DateTimePiker
+                value={date}
+                mode="date"
+                style={styles.datePiker}
+                onChange={(event, value) => {
+                  if (
+                    (event.type === 'dismissed' || event.type === 'set') &&
+                    Platform.OS === 'android'
+                  ) {
+                    setShowPiker(false);
+                  }
+                  if (value) {
+                    setDate(value);
+                  }
+                }}
+              />
+            )}
             <PressableOpacity
               style={styles.btn}
               disabled={!date || !title}

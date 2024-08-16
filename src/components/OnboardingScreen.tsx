@@ -13,6 +13,7 @@ import {onboarded} from '@store/state/onboardingSlice';
 import Text from '@app/components/Text';
 import {onboardingData} from '@app/constant/onboarding';
 import PressableOpacity from './PressableOpacity';
+import { COLOR } from '@app/constant/color';
 
 const OnboardingScreen = () => {
   const ref = useRef<any>(null);
@@ -55,7 +56,7 @@ const OnboardingScreen = () => {
                       testID={`NextBtn${index}`}
                       onPress={() => scrollTo(index)}>
                       <View style={styles.button}>
-                        <Text>
+                        <Text style={styles.nextbtn}>
                           {index < onboardingData.length - 1
                             ? 'Next'
                             : 'Finish'}
@@ -133,6 +134,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingHorizontal: 20,
   },
+  nextbtn:{
+    color:COLOR.white
+  }
 });
 
 export default OnboardingScreen;
