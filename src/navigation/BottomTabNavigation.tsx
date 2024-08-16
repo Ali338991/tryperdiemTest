@@ -1,11 +1,11 @@
 import React from 'react';
 import {TabParamList} from '@app/types/navigation';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from '@screens/Home';
-import Setting from '@screens/Setting';
 import {COLOR} from '@app/constant/color';
 import {StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import HomeScreen from '@screens/home/HomeScreen';
+import SettingScreen from '@screens/setting/SettingScreen';
 type IconType = {
   name: string;
   color: string;
@@ -28,7 +28,7 @@ const BottomTabsNavigation = () => {
       }}>
       <BottomTab.Screen
         name="HomeTab"
-        component={Home}
+        component={HomeScreen}
         options={() => ({
           tabBarLabel: 'Home',
           tabBarActiveTintColor: COLOR.primaryColor,
@@ -38,7 +38,7 @@ const BottomTabsNavigation = () => {
       />
       <BottomTab.Screen
         name="SettingTab"
-        component={Setting}
+        component={SettingScreen}
         options={() => ({
           tabBarLabel: 'Setting',
           tabBarActiveTintColor: COLOR.primaryColor,

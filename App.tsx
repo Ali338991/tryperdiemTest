@@ -6,8 +6,8 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
-import OnboardingScreen from '@components/OnboardingScreen';
 import RootNavigation from '@app/navigation/RootNavigation';
+import OnboardingScreen from '@screens/onboarding/OnboardingScreen';
 
 export default function App() {
   useEffect(() => {

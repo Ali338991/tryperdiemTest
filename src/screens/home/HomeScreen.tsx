@@ -8,7 +8,7 @@ import Text from '@components/Text';
 import PressableOpacity from '@components/PressableOpacity';
 import {COLOR} from '@app/constant/color';
 import {displayNotification} from '@app/lib/notification';
-export default function Home() {
+export default function HomeScreen() {
   const {todos} = useAppSelector(state => state.todo);
   const dispatch = useAppDispatch();
   const sendNotification = () => {

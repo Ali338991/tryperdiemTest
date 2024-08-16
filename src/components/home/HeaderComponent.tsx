@@ -1,21 +1,14 @@
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Modal,
-  TextInput,
-  Platform,
-} from 'react-native';
+import {View, StyleSheet, FlatList, Modal, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from '@store/store';
 import PressableOpacity from '@components/PressableOpacity';
 import {COLOR} from '@app/constant/color';
-import DateTimePiker from '@react-native-community/datetimepicker';
 import {addItemInList, removeItemInList} from '@store/state/todoSlice';
 import {List} from '@app/types/todo';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Text from '@components/Text';
 import Button from '@components/Button';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 export default function HeaderComponent() {
   const [openModal, setOpenModal] = useState(false);
@@ -41,7 +34,6 @@ export default function HeaderComponent() {
             style={styles.btn}
             onPress={() => {
               setTitle('');
-              setShowPiker(Platform.OS === 'ios');
               setOpenModal(true);
             }}>
             <Text style={styles.btnText}>Add</Text>
@@ -78,33 +70,22 @@ export default function HeaderComponent() {
             <Text style={styles.todoTitle}>Add Entry</Text>
             <TextInput
               style={styles.input}
-              placeholder="add title"
+              placeholder="Add title"
               value={title}
               onChangeText={setTitle}
             />
-            {Platform.OS === 'android' && (
-              <Button width={100} onPress={() => setShowPiker(true)}>
-                selet date
-              </Button>
-            )}
-            {showPiker && (
-              <DateTimePiker
-                value={date}
-                mode="date"
-                style={styles.datePiker}
-                onChange={(event, value) => {
-                  if (
-                    (event.type === 'dismissed' || event.type === 'set') &&
-                    Platform.OS === 'android'
-                  ) {
-                    setShowPiker(false);
-                  }
-                  if (value) {
-                    setDate(value);
-                  }
-                }}
-              />
-            )}
+            <Button width={120} onPress={() => setShowPiker(true)}>
+              selet date/time
+            </Button>
+            <DateTimePickerModal
+              isVisible={showPiker}
+              mode="datetime"
+              onConfirm={value => {
+                setDate(value);
+                setShowPiker(false);
+              }}
+              onCancel={() => setShowPiker(false)}
+            />
             <PressableOpacity
               style={styles.btn}
               disabled={!date || !title}
@@ -151,7 +132,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: 'white',
     borderRadius: 5,
-    padding: 10,
+    padding: 15,
     gap: 10,
   },
   input: {

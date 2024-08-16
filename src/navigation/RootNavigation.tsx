@@ -1,7 +1,7 @@
 import React from 'react';
 import {StackParamList} from '@app/types/navigation';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from '@screens/Auth/LoginScreen';
+import LoginScreen from '@screens/auth/LoginScreen';
 import BottomTabsNavigation from './BottomTabNavigation';
 import {useAppSelector} from '@store/store';
 

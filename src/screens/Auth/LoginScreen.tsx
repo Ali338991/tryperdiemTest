@@ -4,7 +4,7 @@ import PressableOpacity from '@components/PressableOpacity';
 import {useAppDispatch} from '@store/store';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import {View, TextInput, Text, StyleSheet, Alert} from 'react-native';
+import {View, TextInput, Text, StyleSheet, Alert, Image} from 'react-native';
 import {login} from '@redux/state/authSlice';
 import {initilizeTodo} from '@store/state/todoSlice';
 import {defaultTodoList} from '@app/constant';
@@ -40,13 +40,13 @@ export default function LoginScreen({navigation}: StackScreen<'Login'>) {
   };
   return (
     <View style={styles.container}>
+      <Image source={require('../../../assets/logo.png')} style={styles.logo} />
       <TextInput
         style={styles.input}
         placeholder="User name"
         value={userName}
         onChangeText={setUserName}
       />
-
       <View style={styles.passwordContainer}>
         <TextInput
           style={[styles.input, {flex: 1}]}
@@ -64,9 +64,9 @@ export default function LoginScreen({navigation}: StackScreen<'Login'>) {
       </View>
 
       <View>
-      <Button onPress={handleLogin} loading={loader}>
-        Sign In
-      </Button>
+        <Button onPress={handleLogin} loading={loader}>
+          Sign In
+        </Button>
       </View>
       <Text style={styles.orText}>OR</Text>
       <GoogleLogin />
@@ -79,6 +79,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+    gap: 20,
+  },
+  logo: {
+    width: 250,
+    height: 250,
+    alignSelf: 'center',
   },
   input: {
     height: 50,

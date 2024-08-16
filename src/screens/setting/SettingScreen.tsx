@@ -7,7 +7,7 @@ import {COLOR} from '@app/constant/color';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Text from '@components/Text';
 
-export default function Setting() {
+export default function SettingScreen() {
   const dispatch = useAppDispatch();
   const {user} = useAppSelector(state => state.auth);
   return (

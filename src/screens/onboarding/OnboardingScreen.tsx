@@ -7,12 +7,10 @@ import {
   View,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
-
 import {onboarded} from '@store/state/onboardingSlice';
-
 import Text from '@app/components/Text';
 import {onboardingData} from '@app/constant/onboarding';
-import PressableOpacity from './PressableOpacity';
+import PressableOpacity from '../../components/PressableOpacity';
 import { COLOR } from '@app/constant/color';
 
 const OnboardingScreen = () => {
