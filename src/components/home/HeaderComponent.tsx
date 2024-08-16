@@ -82,7 +82,11 @@ export default function HeaderComponent() {
               value={title}
               onChangeText={setTitle}
             />
-            <Button onPress={() => setShowPiker(true)}>selet date</Button>
+            {Platform.OS === 'android' && (
+              <Button width={100} onPress={() => setShowPiker(true)}>
+                selet date
+              </Button>
+            )}
             {showPiker && (
               <DateTimePiker
                 value={date}

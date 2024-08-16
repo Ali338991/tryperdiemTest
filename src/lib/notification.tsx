@@ -25,7 +25,7 @@ async function displayNotification({ message, title = 'On tag list', delay = 0 }
     await notifee.createTriggerNotification(
       {
         title,
-        body: message,
+        body: `${message} are ON`,
         android: {
           channelId,
           pressAction: {
@@ -38,7 +38,7 @@ async function displayNotification({ message, title = 'On tag list', delay = 0 }
   } else {
     await notifee.displayNotification({
       title,
-      body: message,
+      body: `${message} are ON`,
       android: {
         channelId,
         pressAction: {
