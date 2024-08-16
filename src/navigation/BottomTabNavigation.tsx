@@ -5,21 +5,17 @@ import Home from '@screens/Home';
 import Setting from '@screens/Setting';
 import {COLOR} from '@app/constant/color';
 import {StyleSheet} from 'react-native';
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 type IconType = {
-  focused: boolean;
+  name: string;
   color: string;
   size: number;
 };
 const BottomTab = createBottomTabNavigator<TabParamList>();
 
-// const renderStyledHomeIcon = ({color, size, focused}: IconType) => (
-//   <HomeIcon variant={focused ? 'Bold' : 'Outline'} color={color} size={size} />
-// );
-// const renderStyledServicesIcon = ({color, size, focused}: IconType) => (
-//   <Flash variant={focused ? 'Bold' : 'Outline'} color={color} size={size} />
-// );
-
+const renderIcon = ({color, size, name}: IconType) => (
+  <Icon name={name} color={color} size={size} />
+);
 const BottomTabsNavigation = () => {
   return (
     <BottomTab.Navigator
@@ -33,19 +29,21 @@ const BottomTabsNavigation = () => {
       <BottomTab.Screen
         name="HomeTab"
         component={Home}
-        options={{
+        options={() => ({
           tabBarLabel: 'Home',
           tabBarActiveTintColor: COLOR.primaryColor,
-          // tabBarIcon: renderStyledHomeIcon,
-        }}
+          tabBarIcon: ({color, size}) =>
+            renderIcon({name: 'home', color, size}),
+        })}
       />
       <BottomTab.Screen
         name="SettingTab"
         component={Setting}
-        options={{
+        options={() => ({
           tabBarLabel: 'Setting',
           tabBarActiveTintColor: COLOR.primaryColor,
-        }}
+          tabBarIcon: ({color, size}) => renderIcon({name: 'cog', color, size}),
+        })}
       />
     </BottomTab.Navigator>
   );
@@ -54,8 +52,8 @@ const BottomTabsNavigation = () => {
 export default BottomTabsNavigation;
 const styles = StyleSheet.create({
   tabBar: {
-    backgroundColor: COLOR.backgroundColor,
     paddingHorizontal: 10,
+    paddingTop: 10,
   },
   label: {
     fontSize: 12,

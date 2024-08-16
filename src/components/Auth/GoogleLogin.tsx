@@ -1,21 +1,24 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Image, StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
-
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useNavigation} from '@react-navigation/native';
-
 import PressableOpacity from '@components/PressableOpacity';
 import Text from '@components/Text';
 
 import {GOOGLE_CLIENT_ID} from '@app/config';
 import {COLOR} from '@app/constant/color';
+import {loginAPi} from '@store/api/authApi';
+import {login} from '@store/state/authSlice';
+import {initilizeTodo} from '@store/state/todoSlice';
+import {defaultTodoList} from '@app/constant';
+import {StackNavigation} from '@app/types/navigation';
 
 const GoogleLogin = () => {
   const dispatch = useDispatch();
   const {navigate} = useNavigation();
   const [loading, setLoading] = useState(false);
-
+  const navigation = useNavigation<StackNavigation>();
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: GOOGLE_CLIENT_ID,
@@ -32,9 +35,14 @@ const GoogleLogin = () => {
       });
 
       const {idToken} = await GoogleSignin.signIn();
-      console.log('🚀 ~ handleLogin ~ idToken:', idToken);
+      const response = await loginAPi({
+        token: String(idToken),
+      });
+      dispatch(login(response));
+      dispatch(initilizeTodo(defaultTodoList));
+      navigation.navigate('Home');
     } catch (err) {
-    console.log("🚀 ~ handleLogin ~ err:", err)
+      console.log('🚀 ~ handleLogin ~ err:', err);
     } finally {
       setLoading(false);
     }

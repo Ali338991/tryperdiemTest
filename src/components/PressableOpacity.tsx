@@ -23,7 +23,7 @@ const PressableOpacity = ({
 
   return (
     <Pressable {...props} style={handlePressedStyles}>
-      {loading ? <ActivityIndicator /> : children}
+      {loading ? <ActivityIndicator color={'white'} /> : children}
     </Pressable>
   )
 }

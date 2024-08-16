@@ -3,11 +3,12 @@ import {StackParamList} from '@app/types/navigation';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '@screens/Auth/LoginScreen';
 import BottomTabsNavigation from './BottomTabNavigation';
+import {useAppSelector} from '@store/store';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
 export default function RootNavigation() {
-  const isLoggedIn = false;
+  const {isLoggedIn} = useAppSelector(state => state.auth);
   return (
     <Stack.Navigator
       screenOptions={{

@@ -1,29 +1,49 @@
+import {StackScreen} from '@app/types/navigation';
 import GoogleLogin from '@components/Auth/GoogleLogin';
 import PressableOpacity from '@components/PressableOpacity';
+import {useAppDispatch} from '@store/store';
 import React, {useState} from 'react';
-import {
-  View,
-  TextInput,
-  Button,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-} from 'react-native';
-
-export default function LoginScreen() {
-  const [email, setEmail] = useState('');
+import Icon from 'react-native-vector-icons/Feather';
+import {View, TextInput, Text, StyleSheet, Alert} from 'react-native';
+import {login} from '@redux/state/authSlice';
+import {initilizeTodo} from '@store/state/todoSlice';
+import {defaultTodoList} from '@app/constant';
+import { loginAPi } from '@store/api/authApi';
+export default function LoginScreen({navigation}: StackScreen<'Login'>) {
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loader, setloader] = useState(false)
+  const dispatch = useAppDispatch();
+  const handleLogin = async () => {
+    if(!userName){
+      return Alert.alert("username missing")
+    }
+    if(!password){
+      return Alert.alert("password missing")
+    }
+    setloader(true)
+    const response = await loginAPi({
+      userName,
+      password,
+    })
 
+    if (response?.status !== 200) {
+    setloader(false)
+      return Alert.alert(response?.message);
+    }
+    setloader(false)
+    dispatch(login(response));
+    dispatch(initilizeTodo(defaultTodoList));
+    navigation.navigate('Home');
+  };
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
+        placeholder="User name"
+        value={userName}
+        onChangeText={setUserName}
       />
 
       <View style={styles.passwordContainer}>
@@ -34,24 +54,17 @@ export default function LoginScreen() {
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity
+        <Icon
+          name={showPassword ? 'eye-off' : 'eye'}
           style={styles.showHideBtn}
-          onPress={() => setShowPassword(!showPassword)}>
-          <Text style={styles.showHideText}>
-            {showPassword ? 'Hide' : 'Show'}
-          </Text>
-        </TouchableOpacity>
+          onPress={() => setShowPassword(!showPassword)}
+        />
       </View>
 
-      <Button title="Sign In" onPress={() => Alert.alert('Sign In Pressed')} />
-      <PressableOpacity
-        style={styles.button}
-        onPress={() => Alert.alert('Google Sign In Pressed')}>
+      <PressableOpacity style={styles.button} onPress={handleLogin} loading={loader}>
         <Text style={styles.buttonText}>Sign In</Text>
       </PressableOpacity>
-
       <Text style={styles.orText}>OR</Text>
-
       <GoogleLogin />
     </View>
   );
