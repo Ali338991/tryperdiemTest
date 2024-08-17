@@ -24,13 +24,12 @@ const authReducer = createReducer(initialState, builder => {
   builder.addCase(logout, () => initialState);
 });
 
-
 export default persistReducer(
   {
     key: 'rtk:auth',
     storage: AsyncStorage,
     timeout: 0,
-    whitelist: ['isLoggedIn'],
+    whitelist: ['isLoggedIn', 'user'],
   },
   authReducer,
 );

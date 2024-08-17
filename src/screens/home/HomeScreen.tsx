@@ -1,95 +1,78 @@
 import {View, FlatList, StyleSheet, Switch} from 'react-native';
-import React, {Fragment} from 'react';
+import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useAppDispatch, useAppSelector} from '@store/store';
 import {updateTodo} from '@store/state/todoSlice';
-import HeaderComponent from '@components/home/HeaderComponent';
+import ListComponent from '@components/home/ListComponent';
 import Text from '@components/Text';
-import PressableOpacity from '@components/PressableOpacity';
-import {COLOR} from '@app/constant/color';
 import {displayNotification} from '@app/lib/notification';
+import {normalizeDimension} from '@app/util/design';
+import Button from '@components/Button';
+import {commonStyle} from '@app/constant/commonStyle';
+import {getMessage} from '@app/util';
+import {Todo} from '@app/types/todo';
+
 export default function HomeScreen() {
   const {todos} = useAppSelector(state => state.todo);
   const dispatch = useAppDispatch();
-  const sendNotification = () => {
-    const message = todos?.reduce((acc, item) => {
-      if (item?.completed) {
-        return acc + ' ' + item?.title;
-      }
-      return acc;
-    }, '');
 
-    displayNotification({message: message.trim()});
+  const handleNotification = () => {
+    displayNotification({message: getMessage(todos)});
   };
-  const sendScheduleNotification = () => {
-    const message = todos?.reduce((acc, item) => {
-      if (item?.completed) {
-        return acc + ' ' + item?.title;
-      }
-      return acc;
-    }, '');
 
-    displayNotification({message: message.trim(), delay: 5});
+  const handleScheduledNotification = () => {
+    displayNotification({message: getMessage(todos), delay: 5});
   };
+
+  const handleSwitchChange = (item: Todo, value: boolean) => {
+    dispatch(
+      updateTodo({
+        ...item,
+        completed: value,
+      }),
+    );
+  };
+
+  const renderItem = ({item}: {item: Todo}) => (
+    <View style={commonStyle.between}>
+      <Text>{item.title}</Text>
+      <Switch
+        value={item.completed}
+        onValueChange={value => handleSwitchChange(item, value)}
+      />
+    </View>
+  );
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <FlatList
-        ListHeaderComponent={HeaderComponent}
+        ListHeaderComponent={ListComponent}
         data={todos}
         keyExtractor={item => item.id.toString()}
         contentContainerStyle={styles.contentContainerStyle}
-        renderItem={({item}) => {
-          return (
-            <View style={styles?.container}>
-              <Text>{item.title}</Text>
-              <Switch
-                value={item?.completed}
-                onValueChange={value => {
-                  dispatch(
-                    updateTodo({
-                      ...item,
-                      completed: value,
-                    }),
-                  );
-                }}
-              />
-            </View>
-          );
-        }}
+        renderItem={renderItem}
         ListFooterComponent={
-          <Fragment>
-            <PressableOpacity style={styles.btn} onPress={sendNotification}>
-              <Text style={styles.btnText}>Trigger Notification</Text>
-            </PressableOpacity>
-            <PressableOpacity
-              style={styles.btn}
-              onPress={sendScheduleNotification}>
-              <Text style={styles.btnText}>Schedule Notification 5sec</Text>
-            </PressableOpacity>
-          </Fragment>
+          <View style={styles.bottomContainer}>
+            <Button onPress={handleNotification}>Trigger Notification</Button>
+            <Button onPress={handleScheduledNotification}>
+              Schedule Notification 5 sec
+            </Button>
+          </View>
         }
       />
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
-  contentContainerStyle: {
-    paddingHorizontal: 10,
-    gap: 10,
-  },
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flex: 1,
   },
-  btn: {
-    backgroundColor: COLOR.primaryColor,
-    padding: 10,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 15,
+  contentContainerStyle: {
+    paddingHorizontal: normalizeDimension(10),
+    gap: normalizeDimension(7),
   },
-  btnText: {
-    color: COLOR.white,
+  bottomContainer: {
+    gap: normalizeDimension(7),
   },
 });

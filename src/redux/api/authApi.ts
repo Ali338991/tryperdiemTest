@@ -27,7 +27,7 @@ export const loginAPi = async (body: AuthParam) => {
       message: 'Invalid password',
     };
   }
-  await delay(2000);
+  await delay(2000); //custom delay for show loading
 
   return user;
 };

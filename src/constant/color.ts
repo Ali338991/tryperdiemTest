@@ -3,5 +3,7 @@ export const COLOR = {
   backgroundColor: 'red',
   white: 'white',
   shadow: 'rgba(0, 0, 0, 0.5)',
-  black:"#000000"
+  black:"#000000",
+  borderGrey: "#CACACA",
+  danger:'red'
 };

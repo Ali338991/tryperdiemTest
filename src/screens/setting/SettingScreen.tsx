@@ -1,57 +1,51 @@
-import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import PressableOpacity from '@components/PressableOpacity';
+import {StyleSheet, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {useAppDispatch, useAppSelector} from '@store/store';
 import {logout} from '@store/state/authSlice';
 import {COLOR} from '@app/constant/color';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import Text from '@components/Text';
+import Button from '@components/Button';
+import {commonStyle} from '@app/constant/commonStyle';
+import {normalizeDimension} from '@app/util/design';
 
 export default function SettingScreen() {
   const dispatch = useAppDispatch();
   const {user} = useAppSelector(state => state.auth);
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text size={30} style={styles.title}>
+      <Text align="center" weight="600" size={30}>
         Information
       </Text>
-      <View style={styles.listItem}>
-        <Text>Name</Text>
+      <View style={commonStyle.between}>
+        <Text weight="600">Name</Text>
         <Text>{user?.name}</Text>
       </View>
       <View style={styles.listItem}>
-        <Text>email</Text>
+        <Text weight="600">Email</Text>
         <Text>{user?.email}</Text>
       </View>
-      <PressableOpacity onPress={() => dispatch(logout())} style={styles.btn}>
-        <Text style={styles.btnText}>Logout</Text>
-      </PressableOpacity>
+      <Button onPress={() => dispatch(logout())} style={styles.btn}>
+        Logout
+      </Button>
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
-    gap: 10,
+    paddingHorizontal: normalizeDimension(10),
+    paddingVertical: normalizeDimension(20),
   },
   listItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginVertical: normalizeDimension(5),
   },
   btn: {
-    backgroundColor: 'red',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 15,
-    borderRadius: 10,
-  },
-  btnText: {
-    color: COLOR.white,
-  },
-  title: {
-    color: COLOR.black,
-    marginVertical: 40,
-    textAlign: 'center',
+    backgroundColor: COLOR.danger,
+    marginTop: normalizeDimension(20),
   },
 });

@@ -1,15 +1,15 @@
 import {StackScreen} from '@app/types/navigation';
 import GoogleLogin from '@components/Auth/GoogleLogin';
-import PressableOpacity from '@components/PressableOpacity';
 import {useAppDispatch} from '@store/store';
 import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/Feather';
-import {View, TextInput, Text, StyleSheet, Alert, Image} from 'react-native';
+import {View, StyleSheet, Alert, Image} from 'react-native';
 import {login} from '@redux/state/authSlice';
 import {initilizeTodo} from '@store/state/todoSlice';
 import {defaultTodoList} from '@app/constant';
 import {loginAPi} from '@store/api/authApi';
 import Button from '@components/Button';
+import TextInput from '@components/TextInput';
+import Text from '@components/Text';
 export default function LoginScreen({navigation}: StackScreen<'Login'>) {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -42,33 +42,24 @@ export default function LoginScreen({navigation}: StackScreen<'Login'>) {
     <View style={styles.container}>
       <Image source={require('../../../assets/logo.png')} style={styles.logo} />
       <TextInput
-        style={styles.input}
+        label="User name"
         placeholder="User name"
         value={userName}
         onChangeText={setUserName}
       />
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={[styles.input, {flex: 1}]}
-          placeholder="Password"
-          secureTextEntry={!showPassword}
-          value={password}
-          onChangeText={setPassword}
-        />
-        <Icon
-          name={showPassword ? 'eye-off' : 'eye'}
-          style={styles.showHideBtn}
-          size={20}
-          onPress={() => setShowPassword(!showPassword)}
-        />
-      </View>
-
-      <View>
-        <Button onPress={handleLogin} loading={loader}>
-          Sign In
-        </Button>
-      </View>
-      <Text style={styles.orText}>OR</Text>
+      <TextInput
+        label="Password"
+        placeholder="Password"
+        secureTextEntry={!showPassword}
+        value={password}
+        onChangeText={setPassword}
+      />
+      <Button onPress={handleLogin} loading={loader}>
+        Sign In
+      </Button>
+      <Text size={18} align="center">
+        OR
+      </Text>
       <GoogleLogin />
     </View>
   );
@@ -85,33 +76,5 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     alignSelf: 'center',
-  },
-  input: {
-    height: 50,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-  },
-  passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
-    position: 'relative',
-  },
-  showHideBtn: {
-    position: 'absolute',
-    right: 10,
-    top: 15,
-  },
-  showHideText: {
-    color: '#1E90FF',
-    marginLeft: 10,
-  },
-  orText: {
-    textAlign: 'center',
-    marginVertical: 20,
-    color: '#666',
   },
 });

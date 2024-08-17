@@ -3,9 +3,7 @@ import {Image, StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {useNavigation} from '@react-navigation/native';
-import PressableOpacity from '@components/PressableOpacity';
 import Text from '@components/Text';
-
 import {GOOGLE_CLIENT_ID} from '@app/config';
 import {COLOR} from '@app/constant/color';
 import {loginAPi} from '@store/api/authApi';
@@ -13,12 +11,14 @@ import {login} from '@store/state/authSlice';
 import {initilizeTodo} from '@store/state/todoSlice';
 import {defaultTodoList} from '@app/constant';
 import {StackNavigation} from '@app/types/navigation';
+import {hp, normalizeDimension} from '@app/util/design';
+import PressableOpacity from '@components/PressableOpacity';
 
 const GoogleLogin = () => {
   const dispatch = useDispatch();
-  const {navigate} = useNavigation();
-  const [loading, setLoading] = useState(false);
   const navigation = useNavigation<StackNavigation>();
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: GOOGLE_CLIENT_ID,
@@ -28,61 +28,54 @@ const GoogleLogin = () => {
 
   const handleLogin = useCallback(async () => {
     setLoading(true);
-
     try {
       await GoogleSignin.hasPlayServices({
         showPlayServicesUpdateDialog: true,
       });
 
       const {idToken} = await GoogleSignin.signIn();
-      const response = await loginAPi({
-        token: String(idToken),
-      });
+      const response = await loginAPi({token: String(idToken)});
       dispatch(login(response));
       dispatch(initilizeTodo(defaultTodoList));
       navigation.navigate('Home');
-    } catch (err) {
-      console.log('🚀 ~ handleLogin ~ err:', err);
+    } catch (error) {
+      console.error('Login error:', error);
     } finally {
       setLoading(false);
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigation]);
 
   return (
     <PressableOpacity
       style={styles.button}
       onPress={handleLogin}
+      loadingColor={'black'}
       loading={loading}>
       <Image source={require('@assets/google.png')} />
-      <Text style={styles.text}>Sign in with Google</Text>
+      <Text>Sign in with Google</Text>
     </PressableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    height: 48,
+    height: hp(48),
     width: '100%',
     borderRadius: 20,
     backgroundColor: COLOR.white,
     shadowColor: COLOR.shadow,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
+    shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-
     elevation: 3,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    gap: normalizeDimension(5),
   },
-  text: {
-    color: COLOR.black,
-    fontSize: 18,
-    fontWeight: '600',
-    marginLeft: 5,
+  icon: {
+    width: normalizeDimension(24),
+    height: normalizeDimension(24),
   },
 });
 

@@ -6,6 +6,7 @@ import {StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import HomeScreen from '@screens/home/HomeScreen';
 import SettingScreen from '@screens/setting/SettingScreen';
+import {hp, normalizeDimension, scaleFontSize} from '@app/util/design';
 type IconType = {
   name: string;
   color: string;
@@ -52,13 +53,13 @@ const BottomTabsNavigation = () => {
 export default BottomTabsNavigation;
 const styles = StyleSheet.create({
   tabBar: {
-    paddingHorizontal: 10,
-    paddingBottom: 10,
-    paddingTop: 15,
-    height: 74,
+    paddingHorizontal: normalizeDimension(10),
+    paddingBottom: normalizeDimension(15),
+    paddingTop: normalizeDimension(15),
+    height: hp(74),
   },
   label: {
-    fontSize: 12,
+    fontSize: scaleFontSize(12),
     fontWeight: '400',
     lineHeight: 16,
   },

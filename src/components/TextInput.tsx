@@ -1,107 +1,76 @@
 import {
-    Image,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-  } from 'react-native';
-  import {InputProps} from '../../utils/types';
-  import {commonFontStyle, hp, wp} from '../../theme/fonts';
-  import {colors} from '../../theme/colors';
-  import {Icons} from '../../assets';
-  
-  const Input = ({
-    placeholder,
-    label,
-    value,
-    onChangeText,
-    secureTextEntry,
-    onPressEye,
-    isShowEyeIcon,
-    theme = 'first',
-    autoCorrect,
-    inputRef,
-    returnKeyType,
-    onSubmitEditing,
-    ...rest
-  }: InputProps) => {
-    return (
-      <View style={styles.container}>
-        <Text numberOfLines={1} style={styles.labelTextStyle}>
-          {label}
-        </Text>
-        <View
-          style={
-            theme === 'first'
-              ? {...styles.firstThemeContainer}
-              : {...styles.secondThemeContainer}
-          }>
-          <TextInput
-            {...rest}
-            ref={inputRef}
-            value={value}
-            autoCorrect={autoCorrect}
-            placeholder={placeholder}
-            style={styles.inputStyle}
-            onChangeText={onChangeText}
-            returnKeyType={returnKeyType}
-            secureTextEntry={secureTextEntry}
-            onSubmitEditing={onSubmitEditing}
-            placeholderTextColor={colors.borderGreyLight}
+  StyleSheet,
+  TextInput as NativeInput,
+  TextInputProps,
+  View,
+} from 'react-native';
+
+import Icon from 'react-native-vector-icons/Feather';
+import {useState} from 'react';
+import {COLOR} from '@app/constant/color';
+import {CustomTextInputProps} from '@app/types/textInput';
+import {hp, normalizeDimension, generateTextStyle} from '@app/util/design';
+import Text from './Text';
+
+const TextInput = ({
+  placeholder,
+  label = '',
+  value,
+  onChangeText,
+  secureTextEntry,
+  onSubmitEditing,
+  ...rest
+}: TextInputProps & CustomTextInputProps) => {
+  const [showPassword, setShowPassword] = useState(secureTextEntry);
+  return (
+    <View>
+      <Text numberOfLines={1}>{label}</Text>
+      <View style={styles.inputContainer}>
+        <NativeInput
+          value={value}
+          autoCapitalize="none"
+          placeholder={placeholder}
+          style={styles.inputStyle}
+          onChangeText={onChangeText}
+          secureTextEntry={showPassword}
+          onSubmitEditing={onSubmitEditing}
+          placeholderTextColor={COLOR.borderGrey}
+          {...rest}
+        />
+        {secureTextEntry && (
+          <Icon
+            name={showPassword ? 'eye-off' : 'eye'}
+            style={styles.showHideBtn}
+            size={20}
+            onPress={() => setShowPassword(!showPassword)}
           />
-          {isShowEyeIcon ? (
-            <TouchableOpacity onPress={onPressEye}>
-              <Image
-                resizeMode="contain"
-                style={styles.eyeIconStyle}
-                source={secureTextEntry ? Icons.eyeHide : Icons.eye}
-              />
-            </TouchableOpacity>
-          ) : null}
-        </View>
+        )}
       </View>
-    );
-  };
-  
-  const styles = StyleSheet.create({
-    container: {
-      marginTop: hp(25),
-    },
-    labelTextStyle: {
-      ...commonFontStyle(400, 18, colors.primary),
-      marginBottom: hp(5),
-    },
-    firstThemeContainer: {
-      height: hp(60),
-      borderRadius: 10,
-      marginTop: hp(5),
-      backgroundColor: colors.inputBack,
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: wp(20),
-    },
-    secondThemeContainer: {
-      height: hp(60),
-      borderRadius: 10,
-      marginTop: hp(5),
-      backgroundColor: colors.white,
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: wp(20),
-      borderWidth: 1.5,
-      borderColor: colors.inputBorder,
-    },
-    inputStyle: {
-      flex: 1,
-      padding: 0,
-      ...commonFontStyle(400, 18, colors.black),
-    },
-    eyeIconStyle: {
-      height: hp(26),
-      width: hp(26),
-      tintColor: '#BDBDBD',
-    },
-  });
-  
-  export default Input;
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  inputContainer: {
+    height: hp(45),
+    borderRadius: 10,
+    marginTop: normalizeDimension(5),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: normalizeDimension(10),
+    borderWidth: 1,
+    borderColor: COLOR.borderGrey,
+  },
+  inputStyle: {
+    flex: 1,
+    padding: 0,
+    ...generateTextStyle(400, 16, COLOR.black),
+  },
+  showHideBtn: {
+    position: 'absolute',
+    right: 10,
+    top: 15,
+  },
+});
+
+export default TextInput;

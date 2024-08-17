@@ -1,21 +1,17 @@
 import React, {useCallback, useRef} from 'react';
-import {
-  Dimensions,
-  FlatList,
-  ImageBackground,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {FlatList, ImageBackground, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {onboarded} from '@store/state/onboardingSlice';
 import Text from '@app/components/Text';
-import {onboardingData} from '@app/constant/onboarding';
-import PressableOpacity from '../../components/PressableOpacity';
-import { COLOR } from '@app/constant/color';
+import {onboardingData} from '@app/constant';
+import PressableOpacity from '@components/PressableOpacity';
+import {COLOR} from '@app/constant/color';
+import {normalizeDimension, DEVICE_WIDTH, hp, wp} from '@app/util/design';
 
 const OnboardingScreen = () => {
-  const ref = useRef<any>(null);
+  const ref = useRef<FlatList>(null);
   const dispatch = useDispatch();
+
   const scrollTo = useCallback(
     (currentIndex: number) => {
       if (currentIndex >= onboardingData.length - 1) {
@@ -24,58 +20,51 @@ const OnboardingScreen = () => {
         ref.current?.scrollToIndex({index: currentIndex + 1});
       }
     },
-    [dispatch, onboardingData.length],
+    [dispatch],
   );
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        ref={ref}
-        data={onboardingData}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-        pagingEnabled
-        bounces={false}
-        scrollEventThrottle={30}
-        keyExtractor={(_, i) => i.toString()}
-        renderItem={({item, index}) => (
-          <View>
-            <ImageBackground
-              source={{uri: `${item.image}?t=${new Date().getTime()}`}}
-              style={styles.image}>
-              <View style={styles.darkOverlay}>
-                <View>
-                  <View style={styles.content}>
-                    <Text style={styles.heading}>{item.title}</Text>
-                    <Text style={styles.subtext}>{item.description}</Text>
-                  </View>
-                  <View style={{flexDirection: 'column', alignItems: 'center'}}>
-                    <PressableOpacity
-                      testID={`NextBtn${index}`}
-                      onPress={() => scrollTo(index)}>
-                      <View style={styles.button}>
-                        <Text style={styles.nextbtn}>
-                          {index < onboardingData.length - 1
-                            ? 'Next'
-                            : 'Finish'}
-                        </Text>
-                      </View>
-                    </PressableOpacity>
-                    {index < onboardingData.length - 1 && (
-                      <PressableOpacity
-                        testID={`SkipBtn${index}`}
-                        onPress={() => dispatch(onboarded())}>
-                        <Text style={styles.skipButton}>Skip</Text>
-                      </PressableOpacity>
-                    )}
-                  </View>
-                </View>
-              </View>
-            </ImageBackground>
+    <FlatList
+      ref={ref}
+      data={onboardingData}
+      keyExtractor={(_, i) => i.toString()}
+      horizontal
+      pagingEnabled
+      showsHorizontalScrollIndicator={false}
+      bounces={false}
+      scrollEventThrottle={16}
+      renderItem={({item, index}) => (
+        <ImageBackground
+          source={{uri: `${item.image}?t=${new Date().getTime()}`}}
+          style={styles.image}>
+          <View style={styles.darkOverlay}>
+            <View style={styles.gap}>
+              <Text color="white" weight="600" align="center" size={32}>
+                {item.title}
+              </Text>
+              <Text color="white" align="center" size={18}>
+                {item.description}
+              </Text>
+            </View>
+            <PressableOpacity
+              testID={`NextBtn${index}`}
+              style={styles.button}
+              onPress={() => scrollTo(index)}>
+              <Text color="white" weight="700">
+                {index < onboardingData.length - 1 ? 'Next' : 'Finish'}
+              </Text>
+            </PressableOpacity>
+            {index < onboardingData.length - 1 && (
+              <PressableOpacity
+                testID={`SkipBtn${index}`}
+                onPress={() => dispatch(onboarded())}>
+                <Text color="white">Skip</Text>
+              </PressableOpacity>
+            )}
           </View>
-        )}
-      />
-    </View>
+        </ImageBackground>
+      )}
+    />
   );
 };
 
@@ -84,57 +73,33 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    backgroundColor: 'blue',
-    height: 88,
-    width: 88,
-    borderRadius: 100,
+    backgroundColor: COLOR.primaryColor,
+    height: hp(88),
+    width: wp(88),
+    borderRadius: normalizeDimension(100),
     justifyContent: 'center',
     alignItems: 'center',
   },
-  skipButton: {
-    color: '#fff',
-    fontSize: 18,
-    padding: 6,
-    marginTop: 33,
-  },
   image: {
-    width: Dimensions.get('window').width,
+    width: DEVICE_WIDTH,
     flex: 1,
     justifyContent: 'center',
-    padding: 24,
   },
   darkOverlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    backgroundColor: COLOR.shadow,
+    width: DEVICE_WIDTH,
+    flex: 1,
     position: 'absolute',
     top: 0,
     bottom: 0,
-    paddingBottom: 40,
-    flexDirection: 'column',
+    paddingBottom: normalizeDimension(40),
     justifyContent: 'flex-end',
+    alignItems: 'center',
+    gap: normalizeDimension(20),
   },
-  content: {
-    marginBottom: 28,
+  gap: {
+    gap: normalizeDimension(5),
   },
-  heading: {
-    fontWeight: '600',
-    fontSize: 32,
-    color: '#fff',
-    textAlign: 'center',
-    lineHeight: 48,
-    paddingHorizontal: 20,
-  },
-  subtext: {
-    fontSize: 18,
-    lineHeight: 27,
-    color: '#fff',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-  },
-  nextbtn:{
-    color:COLOR.white
-  }
 });
 
 export default OnboardingScreen;

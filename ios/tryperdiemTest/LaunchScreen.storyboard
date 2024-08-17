@@ -16,16 +16,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="k9f-KI-bOg">
-                                <rect key="frame" x="58" y="222" width="258" height="255"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="k9f-KI-bOg">
+                                <rect key="frame" x="62.5" y="208.5" width="250" height="250"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" red="0.55294120309999995" green="0.69411766529999996" blue="0.69411766529999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
+                            <constraint firstItem="k9f-KI-bOg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4Qu-sW-rCp"/>
                             <constraint firstItem="k9f-KI-bOg" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="5UP-93-WPI"/>
                             <constraint firstItem="k9f-KI-bOg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="DXm-Ac-GGO"/>
                             <constraint firstItem="k9f-KI-bOg" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="PDh-JE-Rv5"/>
+                            <constraint firstItem="k9f-KI-bOg" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="WkR-AX-zWv"/>
+                            <constraint firstItem="k9f-KI-bOg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ny5-wJ-bDy"/>
+                            <constraint firstItem="k9f-KI-bOg" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="qNf-eL-tRH"/>
                             <constraint firstItem="k9f-KI-bOg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="wyA-63-ODW"/>
                         </constraints>
                     </view>

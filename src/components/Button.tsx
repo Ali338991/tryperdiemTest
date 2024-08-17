@@ -1,40 +1,46 @@
-import {Text, StyleSheet, ViewStyle, PressableProps} from 'react-native';
+import {StyleSheet, ViewStyle, PressableProps} from 'react-native';
 import React, {ReactNode} from 'react';
 import PressableOpacity from './PressableOpacity';
 import {COLOR} from '@app/constant/color';
+import {normalizeDimension} from '@app/util/design';
+import Text from './Text';
 type Props = {
   onPress: () => void;
   width?: number;
   children: ReactNode;
   style?: ViewStyle;
   loading?: boolean;
+  alignSelf?:
+    | 'auto'
+    | 'baseline'
+    | 'stretch'
+    | 'center'
+    | 'flex-start'
+    | 'flex-end';
 };
 export default function Button({
   onPress,
   width,
   children,
   style,
+  alignSelf = 'auto',
   ...props
 }: Props & PressableProps) {
   return (
     <PressableOpacity
-      style={[styles.btn, {width: width}, style]}
+      style={[styles.btn, {width: width, alignSelf}, style]}
       onPress={onPress}
       {...props}>
-      <Text style={styles.btnText}>{children}</Text>
+      <Text color="white">{children}</Text>
     </PressableOpacity>
   );
 }
 const styles = StyleSheet.create({
   btn: {
     backgroundColor: COLOR.primaryColor,
-    padding: 12,
+    padding: normalizeDimension(10),
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 15,
-  },
-  btnText: {
-    color: COLOR.white,
   },
 });
