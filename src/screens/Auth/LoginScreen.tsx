@@ -10,7 +10,7 @@ import {loginAPi} from '@store/api/authApi';
 import Button from '@components/Button';
 import TextInput from '@components/TextInput';
 import Text from '@components/Text';
-import { createNotificationChannel } from '@app/lib/notification';
+import {createNotificationChannel} from '@app/lib/notification';
 export default function LoginScreen({navigation}: StackScreen<'Login'>) {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +25,7 @@ export default function LoginScreen({navigation}: StackScreen<'Login'>) {
     }
     setloader(true);
     const response = await loginAPi({
-      userName,
+      userName: userName.trim(),
       password,
     });
 
@@ -37,7 +37,7 @@ export default function LoginScreen({navigation}: StackScreen<'Login'>) {
     dispatch(login(response));
     dispatch(initilizeTodo(defaultTodoList));
     navigation.navigate('Home');
-    createNotificationChannel()
+    createNotificationChannel();
   };
   return (
     <View style={styles.container}>
@@ -55,7 +55,10 @@ export default function LoginScreen({navigation}: StackScreen<'Login'>) {
         value={password}
         onChangeText={setPassword}
       />
-      <Button onPress={handleLogin} loading={loader}>
+      <Button
+        onPress={handleLogin}
+        loading={loader}
+        disabled={loader || !userName || !password}>
         Sign In
       </Button>
       <Text size={18} align="center">
