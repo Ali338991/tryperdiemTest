@@ -1,9 +1,9 @@
 import {StyleSheet, ViewStyle, PressableProps} from 'react-native';
 import React, {ReactNode} from 'react';
-import PressableOpacity from './PressableOpacity';
 import {COLOR} from '@app/constant/color';
 import {normalizeDimension} from '@app/util/design';
 import Text from './Text';
+import PressableButton from './PressableButton';
 type Props = {
   onPress: () => void;
   width?: number;
@@ -27,12 +27,12 @@ export default function Button({
   ...props
 }: Props & PressableProps) {
   return (
-    <PressableOpacity
+    <PressableButton
       style={[styles.btn, {width: width, alignSelf}, style]}
       onPress={onPress}
       {...props}>
       <Text color="white">{children}</Text>
-    </PressableOpacity>
+    </PressableButton>
   );
 }
 const styles = StyleSheet.create({

@@ -9,7 +9,7 @@ import Button from '@components/Button';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {commonStyle} from '@app/constant/commonStyle';
 import TextInput from '@components/TextInput';
-import PressableOpacity from '@components/PressableOpacity';
+import PressableButton from '@components/PressableButton';
 import {formatDateTime} from '@app/util';
 import {List} from '@app/types/todo';
 import {normalizeDimension} from '@app/util/design';
@@ -92,14 +92,14 @@ export default function ListComponent() {
               value={title}
               onChangeText={setTitle}
             />
-            <PressableOpacity onPress={openDatePicker}>
+            <PressableButton onPress={openDatePicker}>
               <TextInput
                 label="Date/time"
                 pointerEvents="none"
                 editable={false}
                 value={formatDateTime(date)}
               />
-            </PressableOpacity>
+            </PressableButton>
             {showPicker && (
               <DateTimePickerModal
                 isVisible={showPicker}

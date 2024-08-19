@@ -12,7 +12,7 @@ import {initilizeTodo} from '@store/state/todoSlice';
 import {defaultTodoList} from '@app/constant';
 import {StackNavigation} from '@app/types/navigation';
 import {hp, normalizeDimension} from '@app/util/design';
-import PressableOpacity from '@components/PressableOpacity';
+import PressableButton from '@components/PressableButton';
 
 const GoogleLogin = () => {
   const dispatch = useDispatch();
@@ -46,14 +46,14 @@ const GoogleLogin = () => {
   }, [dispatch, navigation]);
 
   return (
-    <PressableOpacity
+    <PressableButton
       style={styles.button}
       onPress={handleLogin}
       loadingColor={'black'}
       loading={loading}>
       <Image source={require('@assets/google.png')} />
       <Text>Sign in with Google</Text>
-    </PressableOpacity>
+    </PressableButton>
   );
 };
 

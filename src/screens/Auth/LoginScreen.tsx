@@ -13,7 +13,6 @@ import Text from '@components/Text';
 export default function LoginScreen({navigation}: StackScreen<'Login'>) {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [loader, setloader] = useState(false);
   const dispatch = useAppDispatch();
   const handleLogin = async () => {
@@ -50,7 +49,7 @@ export default function LoginScreen({navigation}: StackScreen<'Login'>) {
       <TextInput
         label="Password"
         placeholder="Password"
-        secureTextEntry={!showPassword}
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
       />

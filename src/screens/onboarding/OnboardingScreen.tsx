@@ -4,9 +4,9 @@ import {useDispatch} from 'react-redux';
 import {onboarded} from '@store/state/onboardingSlice';
 import Text from '@app/components/Text';
 import {onboardingData} from '@app/constant';
-import PressableOpacity from '@components/PressableOpacity';
 import {COLOR} from '@app/constant/color';
 import {normalizeDimension, DEVICE_WIDTH, hp, wp} from '@app/util/design';
+import PressableButton from '@components/PressableButton';
 
 const OnboardingScreen = () => {
   const ref = useRef<FlatList>(null);
@@ -46,20 +46,20 @@ const OnboardingScreen = () => {
                 {item.description}
               </Text>
             </View>
-            <PressableOpacity
+            <PressableButton
               testID={`NextBtn${index}`}
               style={styles.button}
               onPress={() => scrollTo(index)}>
               <Text color="white" weight="700">
                 {index < onboardingData.length - 1 ? 'Next' : 'Finish'}
               </Text>
-            </PressableOpacity>
+            </PressableButton>
             {index < onboardingData.length - 1 && (
-              <PressableOpacity
+              <PressableButton
                 testID={`SkipBtn${index}`}
                 onPress={() => dispatch(onboarded())}>
                 <Text color="white">Skip</Text>
-              </PressableOpacity>
+              </PressableButton>
             )}
           </View>
         </ImageBackground>
