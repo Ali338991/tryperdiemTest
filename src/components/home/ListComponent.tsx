@@ -83,6 +83,7 @@ export default function ListComponent() {
         onRequestClose={() => setOpenModal(false)}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <Icon name="close" size={30} onPress={() => setOpenModal(false)} style={styles.closeIcon} />
             <Text align="center" weight={600} size={30}>
               Add Entry
             </Text>
@@ -147,4 +148,7 @@ const styles = StyleSheet.create({
   tagListTitle: {
     marginVertical: normalizeDimension(10),
   },
+  closeIcon:{
+    alignSelf:"flex-end"
+  }
 });
