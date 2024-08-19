@@ -1,20 +1,20 @@
-# App preview Video
-[**IOS Video**](https://www.loom.com/share/b294e04553424db38a01f3190a672751) 
+# App Preview Video  
+[**Video**](https://www.loom.com/share/b294e04553424db38a01f3190a672751)
 
 # App Name: tryperdiemTest
 
 ## Features
-### App Icon
-### Splash Sceen
-### Onboarding screen which appear only once when app launched first time 
-### Login screen
-### Mock api  for login and validation
-### Google login
-### Stack and bottom navigation
-### Dummay tag list on home screen
-### Redux toolkit for  global state management
-### Redux persist for store data in local storage
-### React native componet like calendar, input, button, etc
-### Push notification local side 
-### Setting screen 
-### Logout
+- App Icon  
+- Splash Screen  
+- Onboarding screen (appears only once during the first launch)  
+- Login screen  
+- Mock API for login and validation  
+- Google login  
+- Stack and bottom navigation  
+- Dummy tag list on home screen  
+- Redux Toolkit for global state management  
+- Redux Persist for storing data in local storage  
+- React Native components (calendar, input, button, etc.)  
+- Push notifications (local)  
+- Settings screen  
+- Logout
