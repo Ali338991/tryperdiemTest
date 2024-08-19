@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {TabParamList} from '@app/types/navigation';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLOR} from '@app/constant/color';

@@ -1,1 +1,3 @@
-export const GOOGLE_CLIENT_ID = '506118024895-ehbelvn2tk2aeiae05qfea42casbve4l.apps.googleusercontent.com';
+import {GOOGLE_CLIENT_ID as GOOGLE_ID} from '@env';
+
+export const GOOGLE_CLIENT_ID = GOOGLE_ID;

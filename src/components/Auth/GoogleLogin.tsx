@@ -13,12 +13,12 @@ import {defaultTodoList} from '@app/constant';
 import {StackNavigation} from '@app/types/navigation';
 import {hp, normalizeDimension} from '@app/util/design';
 import PressableButton from '@components/PressableButton';
+import {createNotificationChannel} from '@app/lib/notification';
 
 const GoogleLogin = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<StackNavigation>();
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: GOOGLE_CLIENT_ID,
@@ -38,6 +38,7 @@ const GoogleLogin = () => {
       dispatch(login(response));
       dispatch(initilizeTodo(defaultTodoList));
       navigation.navigate('Home');
+      createNotificationChannel();
     } catch (error) {
       console.error('Login error:', error);
     } finally {

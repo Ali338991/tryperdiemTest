@@ -1,52 +1,55 @@
-import notifee, { TriggerType, TimestampTrigger } from '@notifee/react-native';
+import {notificationChannelId} from '@app/constant';
+import notifee, {TriggerType, TimestampTrigger} from '@notifee/react-native';
 
 type Props = {
   message: string;
   title?: string;
-  delay?: number; 
+  delay?: number;
 };
-
-async function displayNotification({ message, title = 'On tag list', delay = 0 }: Props) {
-  // Request permissions (required for iOS)
+async function createNotificationChannel() {
   await notifee.requestPermission();
-
-  // Create a channel (required for Android)
-  const channelId = await notifee.createChannel({
-    id: 'default',
+  await notifee.createChannel({
+    id: notificationChannelId,
     name: 'Default Channel',
   });
-
-  if (delay > 0) {
-    const trigger: TimestampTrigger = {
-      type: TriggerType.TIMESTAMP,
-      timestamp: Date.now() + delay * 1000, 
-    };
-
-    await notifee.createTriggerNotification(
-      {
-        title,
-        body: `${message} are ON`,
-        android: {
-          channelId,
-          pressAction: {
-            id: 'default',
-          },
-        },
+}
+async function displayNotification({message, title = 'On tag list'}: Props) {
+  await notifee.displayNotification({
+    title,
+    body: message ? `${message} are ON` : 'No tag on',
+    android: {
+      channelId: notificationChannelId,
+      pressAction: {
+        id: notificationChannelId,
       },
-      trigger
-    );
-  } else {
-    await notifee.displayNotification({
+    },
+  });
+}
+async function scheduleNotification({
+  message,
+  title = 'On tag list',
+  delay = 0,
+}: Props) {
+  if (delay <= 0) return;
+
+  const trigger: TimestampTrigger = {
+    type: TriggerType.TIMESTAMP,
+    timestamp: Date.now() + delay * 1000,
+  };
+
+  await notifee.createTriggerNotification(
+    {
       title,
-      body: `${message} are ON`,
+      body: message ? `${message} are ON` : 'No tag on',
       android: {
-        channelId,
+        channelId: notificationChannelId,
         pressAction: {
-          id: 'default',
+          id: notificationChannelId,
         },
       },
-    });
-  }
+    },
+    trigger,
+  );
 }
 
-export { displayNotification };
+export {displayNotification, scheduleNotification, createNotificationChannel};

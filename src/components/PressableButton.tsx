@@ -3,6 +3,8 @@ import {
   ActivityIndicator,
   Pressable,
   PressableProps,
+  PressableStateCallbackType,
+  StyleSheet,
   ViewStyle,
 } from 'react-native';
 
@@ -10,22 +12,22 @@ type ButtonProps = {
   loading?: boolean;
   loadingColor?: string;
 };
-
-const PressableButton: React.FC<PressableProps & ButtonProps> = ({
+const PressableButton = ({
   loading = false,
   loadingColor = 'white',
   children,
-  style,
-  disabled,
   ...props
-}) => {
-  const handlePressedStyles = ({ pressed }: { pressed: boolean }): ViewStyle =>
-    ({
-      opacity: disabled || loading ? 0.6 : pressed ? 0.5 : 1,
-      ...(style as ViewStyle),
-    });
+}: PressableProps & ButtonProps) => {
+  const handlePressedStyles = ({pressed}: PressableStateCallbackType) =>
+    StyleSheet.compose(
+      StyleSheet.flatten<ViewStyle>(props.style as ViewStyle),
+      {
+        opacity: props.disabled || loading ? 0.6 : pressed ? 0.5 : 1,
+      },
+    );
+
   return (
-    <Pressable {...props} disabled={disabled || loading} style={handlePressedStyles}>
+    <Pressable {...props} style={handlePressedStyles}>
       {loading ? (
         <ActivityIndicator color={loadingColor} size={25} />
       ) : (

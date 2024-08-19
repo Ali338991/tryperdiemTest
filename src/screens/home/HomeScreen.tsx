@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from '@store/store';
 import {updateTodo} from '@store/state/todoSlice';
 import ListComponent from '@components/home/ListComponent';
 import Text from '@components/Text';
-import {displayNotification} from '@app/lib/notification';
+import {displayNotification, scheduleNotification} from '@app/lib/notification';
 import {normalizeDimension} from '@app/util/design';
 import Button from '@components/Button';
 import {commonStyle} from '@app/constant/commonStyle';
@@ -21,7 +21,7 @@ export default function HomeScreen() {
   };
 
   const handleScheduledNotification = () => {
-    displayNotification({message: getMessage(todos), delay: 5});
+    scheduleNotification({message: getMessage(todos), delay: 5});
   };
 
   const handleSwitchChange = (item: Todo, value: boolean) => {
