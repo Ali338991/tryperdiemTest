@@ -1,5 +1,6 @@
 import {notificationChannelId} from '@app/constant';
 import notifee, {TriggerType, TimestampTrigger} from '@notifee/react-native';
+import {Platform} from 'react-native';
 
 type Props = {
   message: string;
@@ -8,10 +9,12 @@ type Props = {
 };
 async function createNotificationChannel() {
   await notifee.requestPermission();
-  await notifee.createChannel({
-    id: notificationChannelId,
-    name: 'Default Channel',
-  });
+  if (Platform.OS === 'android') {
+    await notifee.createChannel({
+      id: notificationChannelId,
+      name: 'Default Channel',
+    });
+  }
 }
 async function displayNotification({message, title = 'On tag list'}: Props) {
   await notifee.displayNotification({

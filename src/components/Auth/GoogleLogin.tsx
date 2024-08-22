@@ -29,10 +29,7 @@ const GoogleLogin = () => {
   const handleLogin = useCallback(async () => {
     setLoading(true);
     try {
-      await GoogleSignin.hasPlayServices({
-        showPlayServicesUpdateDialog: true,
-      });
-
+      await GoogleSignin.hasPlayServices();
       const {idToken} = await GoogleSignin.signIn();
       const response = await loginAPi({token: String(idToken)});
       dispatch(login(response));
